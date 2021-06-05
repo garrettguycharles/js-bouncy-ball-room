@@ -140,15 +140,15 @@ export class Rect {
     }
     if (this.top < other.top) {
       this.top = other.top;
-      this.yspeed *= 1 * Math.abs(this.yspeed);
+      this.yspeed = 1 * Math.abs(this.yspeed);
     }
     if (this.right > other.right) {
       this.right = other.right;
-      this.xspeed *= -1 * Math.abs(this.xspeed);
+      this.xspeed = -1 * Math.abs(this.xspeed);
     }
     if (this.bottom > other.bottom) {
       this.bottom = other.bottom;
-      this.yspeed *= -1 * Math.abs(this.yspeed);
+      this.yspeed = -1 * Math.abs(this.yspeed);
     }
   }
 
