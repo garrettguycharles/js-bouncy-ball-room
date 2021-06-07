@@ -1,3 +1,5 @@
+import * as utils from "./utils.js";
+
 export class DrawTool {
   constructor(canvas = null) {
     this.canvas = canvas;
@@ -69,5 +71,41 @@ export class DrawTool {
       this.ctx.arc(circle_points[p][0], circle_points[p][1], circle_radius, 0, Math.PI * 2);
       this.ctx.fill();
     }
+  }
+
+  line_interp_width(from, to, w1, w2) {
+    var x1 = from[0];
+    var y1 = from[1];
+    var x2 = to[0];
+    var y2 = to[1];
+
+    var dx = (x2 - x1)
+    var shiftx = 0;
+    var dy = (y2 - y1)
+    var shifty = 0;
+
+    w1 /= 2;
+    w2 /= 2;
+
+    var length = utils.distance_between(from, to);
+
+    if (length < 0) {
+      return;
+    }
+
+    dx /= length ;
+    dy /= length ;
+    shiftx = -dy * w1 ;
+    shifty = dx * w1 ;
+    var angle = Math.atan2(shifty, shiftx);
+    this.ctx.beginPath();
+    this.ctx.moveTo(x1 + shiftx, y1 + shifty);
+    this.ctx.arc(x1, y1, w1, angle, angle + Math.PI);
+    shiftx = -dy * w2 ;
+    shifty = dx * w2 ;
+    this.ctx.lineTo(x2 - shiftx, y2 - shifty);
+    this.ctx.arc(x2, y2, w2, angle + Math.PI, angle);
+    this.ctx.closePath();
+    this.ctx.fill();
   }
 }
