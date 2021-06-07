@@ -93,10 +93,10 @@ export class DrawTool {
       return;
     }
 
-    dx /= length ;
-    dy /= length ;
-    shiftx = -dy * w1 ;
-    shifty = dx * w1 ;
+    dx /= length;
+    dy /= length;
+    shiftx = -dy * w1;
+    shifty = dx * w1;
     var angle = Math.atan2(shifty, shiftx);
     this.ctx.beginPath();
     this.ctx.moveTo(x1 + shiftx, y1 + shifty);

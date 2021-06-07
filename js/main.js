@@ -1,5 +1,6 @@
 import * as utils from "./utils.js";
 import {Rect} from "./rect.js";
+import {Ball} from "./ball.js";
 import {DrawTool} from "./draw.js";
 import {Graph, Node} from "./graph.js";
 
@@ -14,7 +15,7 @@ game_canvas.height = window.innerHeight;
 
 let screen_context = game_canvas.getContext("2d");
 let brush = new DrawTool(game_canvas);
-let screen = new Rect(0, 0, game_canvas.width, game_canvas.height);
+let screen = new Ball(0, 0, game_canvas.width, game_canvas.height);
 let MAX_LAUNCH_SPEED = 15;
 let LAUNCH_RADIUS = 100;
 
@@ -44,7 +45,7 @@ function setup_level() {
 
   for (let i = 0; i < num_balls + num_color_balls; i+=1) {
     let r = utils.random_range(10, 40);
-    let ball = new Rect(0, 0, r, r);
+    let ball = new Ball(0, 0, r, r);
     ball.mass = utils.sphere_radius_to_volume(ball.radius);
     ball.center = [utils.random_range(screen.left, screen.right), utils.random_range(screen.top, screen.bottom)];
     ball.xspeed = 0; //utils.random_range(-10, 10);
@@ -204,7 +205,7 @@ game_canvas.addEventListener("mousedown", (e) => {
   for (let i = 0; i < ball_list.length; i++) {
     let ball = ball_list[i];
     if (ball.collidecircle(influence_rect)) {
-      ball.velocity.coord = utils.scale_coord(influence_rect.get_unit_normal(ball), influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
+      ball.velocity = influence_rect.get_unit_normal(ball).scale(influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
       if (ball.velocity.magnitude > MAX_LAUNCH_SPEED) {
         ball.velocity = ball.velocity.scale(MAX_LAUNCH_SPEED / ball.velocity.magnitude);
       }
@@ -221,7 +222,7 @@ game_canvas.addEventListener("touchstart", (e) => {
   for (let i = 0; i < ball_list.length; i++) {
     let ball = ball_list[i];
     if (ball.collidecircle(influence_rect)) {
-      ball.velocity.coord = utils.scale_coord(influence_rect.get_unit_normal(ball), influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
+      ball.velocity = influence_rect.get_unit_normal(ball).scale(influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
       if (ball.velocity.magnitude > MAX_LAUNCH_SPEED) {
         ball.velocity = ball.velocity.scale(MAX_LAUNCH_SPEED / ball.velocity.magnitude);
       }
@@ -249,7 +250,7 @@ game_canvas.addEventListener("mousemove", (e) => {
   for (let i = 0; i < ball_list.length; i++) {
     let ball = ball_list[i];
     if (ball.collidecircle(influence_rect)) {
-      ball.velocity.coord = utils.scale_coord(influence_rect.get_unit_normal(ball), influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
+      ball.velocity = influence_rect.get_unit_normal(ball).scale(influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
       if (ball.velocity.magnitude > MAX_LAUNCH_SPEED) {
         ball.velocity = ball.velocity.scale(MAX_LAUNCH_SPEED / ball.velocity.magnitude);
       }
@@ -270,7 +271,7 @@ game_canvas.addEventListener("touchmove", (e) => {
     for (let i = 0; i < ball_list.length; i++) {
       let ball = ball_list[i];
       if (ball.collidecircle(influence_rect)) {
-        ball.velocity.coord = utils.scale_coord(influence_rect.get_unit_normal(ball), influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
+        ball.velocity = influence_rect.get_unit_normal(ball).scale(influence_rect.radius * 2 / utils.distance_between(influence_rect.center, ball.center));
         if (ball.velocity.magnitude > MAX_LAUNCH_SPEED) {
           ball.velocity = ball.velocity.scale(MAX_LAUNCH_SPEED / ball.velocity.magnitude);
         }
